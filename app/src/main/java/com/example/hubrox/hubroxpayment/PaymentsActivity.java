@@ -29,11 +29,17 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hubrox.peripherals.Printer;
+
+import java.util.ArrayList;
+
 public class PaymentsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
+    public ArrayList<String> itemCodes = new ArrayList<>();
     public float total = 0;
+    Printer printerManager = new Printer();
     TableRow row;
     TableLayout tableLayout;
     TextView totalPrice;
@@ -246,6 +252,11 @@ public class PaymentsActivity extends AppCompatActivity
         return super.onKeyDown(keyCode, event);
     }
 
+    public void print(View view){
+        printerManager.doPrint(3);
+
+    }
+
     public void insertItem(View view) {
         dialogBuilder = new AlertDialog.Builder(this)
                 .setTitle("Insert")
@@ -269,12 +280,13 @@ public class PaymentsActivity extends AppCompatActivity
                                 //tableLayout.removeAllViews();
                                 String itemCode = itemCodeEditText.getText().toString();
                                 sqlController.open();
+                                itemCodes.add(itemCode);
                                 Cursor c = sqlController.getItem(itemCode);
                                 if (c.getCount() > 0) {
                                     total = Float.parseFloat(c.getString(3)) + total;
                                     totalPrice.setText("Total: " + total);
                                     BuildTable(itemCode);
-                                    Toast.makeText(getBaseContext(), "Item Succesfully Added", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getBaseContext(), "Item Succesfully Added "+itemCodes.size(), Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(getBaseContext(), "This item does not exist", Toast.LENGTH_LONG).show();
                                 }
@@ -319,9 +331,7 @@ public class PaymentsActivity extends AppCompatActivity
             tv.setGravity(Gravity.CENTER);
             tv.setTextSize(15);
             tv.setPadding(0, 5, 0, 5);
-
             tv.setText(c.getString(j));
-
             row.addView(tv);
 
         }
