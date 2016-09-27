@@ -20,7 +20,7 @@
         android:layout_alignParentStart="true"
         android:text="Print Receipt"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:onClick="print"/>
+        />
 
     <Button
         android:id="@+id/swipeButton"

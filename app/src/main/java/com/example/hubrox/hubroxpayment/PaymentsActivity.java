@@ -252,11 +252,6 @@ public class PaymentsActivity extends AppCompatActivity
         return super.onKeyDown(keyCode, event);
     }
 
-    public void print(View view){
-        printerManager.doPrint(3);
-
-    }
-
     public void insertItem(View view) {
         dialogBuilder = new AlertDialog.Builder(this)
                 .setTitle("Insert")
@@ -325,9 +320,8 @@ public class PaymentsActivity extends AppCompatActivity
         for (int j = 1; j < cols; j++) {
 
             TextView tv = new TextView(this);
-            tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,
-                    TableRow.LayoutParams.WRAP_CONTENT));
-//                tv.setBackgroundResource(R.drawable.cell_shape);
+            tv.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT,TableRow.LayoutParams.WRAP_CONTENT));
+            //tv.setBackgroundResource(R.drawable.cell_shape);
             tv.setGravity(Gravity.CENTER);
             tv.setTextSize(15);
             tv.setPadding(0, 5, 0, 5);

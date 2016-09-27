@@ -44,7 +44,7 @@ public class Printer {
 
 //    private Context applicationContext = Printer.this;
 
-    public void doPrint(int type) {
+    public void doPrint(int type){
 
         printerManager.setupPage(384, -1);
         sqlController = new SQLController(context);
@@ -68,6 +68,7 @@ public class Printer {
                 break;
 
             case 3:
+
                 ArrayList<String> itemCodes = paymentsActivity.itemCodes;
                 int posx = 15;
 
@@ -76,14 +77,12 @@ public class Printer {
                 printerManager.drawTextEx(header, 0, 0, 300, -1, "arial", 30, 0, 0, 0);
 
                 //Prints items
-                for (int i = 0; i < itemCodes.size()  ; i++) {
+                for (int i = 0; i < itemCodes.size(); i++) {
                     Cursor c = sqlController.getItem(itemCodes.get(i));
                     String boughtItem = c.getString(1)+"   "+c.getString(2)+"   "+c.getString(3);
                     printerManager.drawTextEx(boughtItem, 0, posx, 300, -1, "arial", 25, 0, 0, 0);
                     posx ++;
                 }
-
-
 
                 //Prints total price
                 String price = "Total Price: " + paymentsActivity.total;
@@ -93,6 +92,7 @@ public class Printer {
                 String footer = "Born to Innovate\r\n\n\n";
                 printerManager.drawTextEx(footer, 0, 80, 300, -1, "arial", 30, 0, 0, 0);
                 break;
+
             case 4:
                 printerManager.drawLine(264, 50, 48, 50, 4);
                 printerManager.drawLine(156, 0, 156, 120, 2);
