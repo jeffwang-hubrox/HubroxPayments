@@ -37,9 +37,8 @@ public class PaymentsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    public ArrayList<String> itemCodes = new ArrayList<>();
+    //public ArrayList<String> itemCodes = new ArrayList<>();
     public float total = 0;
-    Printer printerManager = new Printer();
     TableRow row;
     TableLayout tableLayout;
     TextView totalPrice;
@@ -275,13 +274,13 @@ public class PaymentsActivity extends AppCompatActivity
                                 //tableLayout.removeAllViews();
                                 String itemCode = itemCodeEditText.getText().toString();
                                 sqlController.open();
-                                itemCodes.add(itemCode);
+                                //itemCodes.add(itemCode);
                                 Cursor c = sqlController.getItem(itemCode);
                                 if (c.getCount() > 0) {
                                     total = Float.parseFloat(c.getString(3)) + total;
                                     totalPrice.setText("Total: " + total);
                                     BuildTable(itemCode);
-                                    Toast.makeText(getBaseContext(), "Item Succesfully Added "+itemCodes.size(), Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getBaseContext(), "Item Succesfully Added ", Toast.LENGTH_LONG).show();
                                 } else {
                                     Toast.makeText(getBaseContext(), "This item does not exist", Toast.LENGTH_LONG).show();
                                 }

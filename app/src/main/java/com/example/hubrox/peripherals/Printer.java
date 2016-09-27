@@ -69,7 +69,7 @@ public class Printer {
 
             case 3:
 
-                ArrayList<String> itemCodes = paymentsActivity.itemCodes;
+                /*ArrayList<String> itemCodes = paymentsActivity.itemCodes;
                 int posx = 15;
 
                 //Prints header
@@ -91,7 +91,7 @@ public class Printer {
                 //Prints footer
                 String footer = "Born to Innovate\r\n\n\n";
                 printerManager.drawTextEx(footer, 0, 80, 300, -1, "arial", 30, 0, 0, 0);
-                break;
+                break;*/
 
             case 4:
                 printerManager.drawLine(264, 50, 48, 50, 4);
