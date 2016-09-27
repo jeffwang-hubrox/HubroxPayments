@@ -76,13 +76,11 @@ public class Printer {
 
                 //Prints items
                 for (int i = 0; i < itemCodes.size()  ; i++) {
-
                         Cursor c = sqlController.getItem(itemCodes.get(i));
-                        String boughtItem = c.getString(1)+" "+c.getString(2)+" "+c.getString(3);
+                        String boughtItem = c.getString(1)+"   "+c.getString(2)+"   "+c.getString(3);
                         printerManager.drawTextEx(boughtItem, 0, i, 300, -1, "arial", 25, 0, 0, 0);
-
-                    return;
                 }
+                
 
                 //Prints total price
                 String price = "Total Price: " + paymentsActivity.total;
