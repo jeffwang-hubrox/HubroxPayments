@@ -23,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -88,9 +89,10 @@ public class PaymentsActivity extends AppCompatActivity
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         showScanResult = (EditText) findViewById(R.id.scanResult);
 
-        /*
-        startScanner();
 
+        //startScanner();
+
+        /*
         Button scanButton = (Button) findViewById(R.id.scanButton);
         scanButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,6 +108,7 @@ public class PaymentsActivity extends AppCompatActivity
                 scanManager.startDecode();
             }
         });
+        */
 
 
         Button swipeButton = (Button) findViewById(R.id.swipeButton);
@@ -134,7 +137,7 @@ public class PaymentsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-        */
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -252,6 +255,25 @@ public class PaymentsActivity extends AppCompatActivity
     }
 
     public void insertItem(View view) {
+
+        EditText itemCodeEditText = (EditText) findViewById(R.id.scanResult);
+        String itemCode = itemCodeEditText.getText().toString();
+        sqlController.open();
+        //itemCodes.add(itemCode);
+        Cursor c = sqlController.getItem(itemCode);
+        if (c.getCount() > 0) {
+            total = Float.parseFloat(c.getString(3)) + total;
+            totalPrice.setText("Total: " + total);
+            BuildTable(itemCode);
+            Toast.makeText(getBaseContext(), "Item Succesfully Added ", Toast.LENGTH_LONG).show();
+            itemCodeEditText.setText("");
+        } else {
+            Toast.makeText(getBaseContext(), "This item does not exist", Toast.LENGTH_LONG).show();
+        }
+
+
+
+        /*
         dialogBuilder = new AlertDialog.Builder(this)
                 .setTitle("Insert")
                 .setMessage("Please type the barcode of the item");
@@ -297,7 +319,7 @@ public class PaymentsActivity extends AppCompatActivity
             }
         });
         AlertDialog dialogAdd = dialogBuilder.create();
-        dialogAdd.show();
+        dialogAdd.show();*/
 
     }
 
