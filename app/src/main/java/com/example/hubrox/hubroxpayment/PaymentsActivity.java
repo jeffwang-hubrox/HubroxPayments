@@ -38,7 +38,7 @@ public class PaymentsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    //public ArrayList<String> itemCodes = new ArrayList<>();
+    public ArrayList<String> itemCodes = new ArrayList<>();
     public float total = 0;
     TableRow row;
     TableLayout tableLayout;
@@ -83,8 +83,10 @@ public class PaymentsActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         this.tableLayout = ((TableLayout) findViewById(R.id.paymentsTableLayout));
         this.totalPrice = ((TextView) findViewById(R.id.totalPrice));
+        this.itemCodes = new ArrayList<String>();
 
         sqlController = new SQLController(this);
+
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         showScanResult = (EditText) findViewById(R.id.scanResult);
@@ -260,13 +262,13 @@ public class PaymentsActivity extends AppCompatActivity
         String itemCode = itemCodeEditText.getText().toString();
         if (!itemCode.equals("") && !itemCode.equals(null) && !itemCode.equals(" ")) {
             sqlController.open();
-            //itemCodes.add(itemCode);
+            itemCodes.add(itemCode);
             Cursor c = sqlController.getItem(itemCode);
             if (c.getCount() > 0) {
                 total = Float.parseFloat(c.getString(3)) + total;
                 totalPrice.setText("Total: " + total);
                 BuildTable(itemCode);
-                Toast.makeText(getBaseContext(), "Item Succesfully Added ", Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Item Succesfully Added " + itemCodes.size(), Toast.LENGTH_LONG).show();
                 itemCodeEditText.setText("");
             } else {
                 Toast.makeText(getBaseContext(), "This item does not exist", Toast.LENGTH_LONG).show();
