@@ -119,6 +119,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/paymentsTableLayout"
         android:layout_alignRight="@+id/paymentsTableLayout"
-        android:layout_toRightOf="@+id/scanButton" />
+        android:layout_toRightOf="@+id/scanButton"
+        android:hint="Type or scan code"/>
 
 </RelativeLayout>
