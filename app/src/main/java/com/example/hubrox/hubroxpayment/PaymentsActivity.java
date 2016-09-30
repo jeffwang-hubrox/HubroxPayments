@@ -258,18 +258,23 @@ public class PaymentsActivity extends AppCompatActivity
 
         EditText itemCodeEditText = (EditText) findViewById(R.id.scanResult);
         String itemCode = itemCodeEditText.getText().toString();
-        sqlController.open();
-        //itemCodes.add(itemCode);
-        Cursor c = sqlController.getItem(itemCode);
-        if (c.getCount() > 0) {
-            total = Float.parseFloat(c.getString(3)) + total;
-            totalPrice.setText("Total: " + total);
-            BuildTable(itemCode);
-            Toast.makeText(getBaseContext(), "Item Succesfully Added ", Toast.LENGTH_LONG).show();
-            itemCodeEditText.setText("");
-        } else {
-            Toast.makeText(getBaseContext(), "This item does not exist", Toast.LENGTH_LONG).show();
-        }
+        if (!itemCode.equals("") && !itemCode.equals(null) && !itemCode.equals(" ")) {
+            sqlController.open();
+            //itemCodes.add(itemCode);
+            Cursor c = sqlController.getItem(itemCode);
+            if (c.getCount() > 0) {
+                total = Float.parseFloat(c.getString(3)) + total;
+                totalPrice.setText("Total: " + total);
+                BuildTable(itemCode);
+                Toast.makeText(getBaseContext(), "Item Succesfully Added ", Toast.LENGTH_LONG).show();
+                itemCodeEditText.setText("");
+            } else {
+                Toast.makeText(getBaseContext(), "This item does not exist", Toast.LENGTH_LONG).show();
+            }
+        }else{
+            Toast.makeText(getBaseContext(), "Please type or scan a valid item", Toast.LENGTH_LONG).show();
+            }
+
 
 
 
