@@ -38,7 +38,8 @@ public class PaymentsActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    public ArrayList<String> itemCodes = new ArrayList<>();
+    public Payment payment = null;
+    public ArrayList<String> itemCodes = null;
     public float total = 0;
     TableRow row;
     TableLayout tableLayout;
@@ -83,17 +84,18 @@ public class PaymentsActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
         this.tableLayout = ((TableLayout) findViewById(R.id.paymentsTableLayout));
         this.totalPrice = ((TextView) findViewById(R.id.totalPrice));
-        this.itemCodes = new ArrayList<String>();
+
+        itemCodes = new ArrayList<String>();
 
         sqlController = new SQLController(this);
 
+        payment = new Payment(itemCodes,total);
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         showScanResult = (EditText) findViewById(R.id.scanResult);
 
 
         //startScanner();
-
         /*
         Button scanButton = (Button) findViewById(R.id.scanButton);
         scanButton.setOnClickListener(new View.OnClickListener() {
@@ -109,8 +111,7 @@ public class PaymentsActivity extends AppCompatActivity
                 }
                 scanManager.startDecode();
             }
-        });
-        */
+        });*/
 
 
         Button swipeButton = (Button) findViewById(R.id.swipeButton);
@@ -118,9 +119,19 @@ public class PaymentsActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PaymentsActivity.this, MagManagerActivity.class);
+
+                Bundle bundle = new Bundle();
+
+                bundle.putFloat("TOTAL", total);
+                bundle.putStringArrayList("ITEM_CODES",itemCodes);
+
+                intent.putExtras(bundle);
+
                 startActivity(intent);
             }
         });
+
+
 
         Button insertButton = (Button) findViewById(R.id.insertButton);
         insertButton.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +150,6 @@ public class PaymentsActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
-
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -192,6 +202,11 @@ public class PaymentsActivity extends AppCompatActivity
 
         return super.onOptionsItemSelected(item);
     }
+
+    public Payment getPayment(){
+        return this.payment;
+    }
+
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -262,13 +277,17 @@ public class PaymentsActivity extends AppCompatActivity
         String itemCode = itemCodeEditText.getText().toString();
         if (!itemCode.equals("") && !itemCode.equals(null) && !itemCode.equals(" ")) {
             sqlController.open();
+
             itemCodes.add(itemCode);
+
             Cursor c = sqlController.getItem(itemCode);
             if (c.getCount() > 0) {
                 total = Float.parseFloat(c.getString(3)) + total;
                 totalPrice.setText("Total: " + total);
+                payment.setItemCodes(itemCodes);
+                payment.setTotal(total);
                 BuildTable(itemCode);
-                Toast.makeText(getBaseContext(), "Item Succesfully Added " + itemCodes.size(), Toast.LENGTH_LONG).show();
+                Toast.makeText(getBaseContext(), "Item succesfully added" , Toast.LENGTH_LONG).show();
                 itemCodeEditText.setText("");
             } else {
                 Toast.makeText(getBaseContext(), "This item does not exist", Toast.LENGTH_LONG).show();
@@ -362,10 +381,12 @@ public class PaymentsActivity extends AppCompatActivity
         sqlController.close();
     }
 
+    /*
     public void makePayment(View view) {
         sqlController.open();
         String amount = Float.toString(total);
         sqlController.insertPayment(amount, "198389123901");
         Toast.makeText(getBaseContext(), "Payment complete", Toast.LENGTH_LONG).show();
     }
+    */
 }
