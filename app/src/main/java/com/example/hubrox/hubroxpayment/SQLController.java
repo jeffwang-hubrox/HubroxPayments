@@ -34,11 +34,12 @@ public class SQLController {
     public void insertData(String code, String desc, String price) {
         // TODO Auto-generated method stub
         ContentValues cv = new ContentValues();
-        cv.put(MyDbHelper.USER_CODE, code);
+        String[] split = code.split("\n");
+        cv.put(MyDbHelper.USER_CODE, split[0]);
         cv.put(MyDbHelper.USER_DESC, desc);
         cv.put(MyDbHelper.USER_PRICE, price);
         sqLiteDatabase.insert(MyDbHelper.TABLE_NAME, null, cv);
-    }
+        }
 
 
     public void insertPayment(String Amount, String Card) {
@@ -70,7 +71,6 @@ public class SQLController {
 
     public Cursor getItem(String code) {
         String[] allColumns = new String[]{MyDbHelper.USER_ID, MyDbHelper.USER_CODE, MyDbHelper.USER_DESC, MyDbHelper.USER_PRICE};
-
         Cursor c = sqLiteDatabase.query(MyDbHelper.TABLE_NAME, null, myDbHelper.USER_CODE + " = " + code, null, null, null, null);
 
         if (c != null) {

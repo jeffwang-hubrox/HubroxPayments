@@ -78,12 +78,15 @@ public class ICCActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mIccReader.open((byte) 0, (byte) 0x01, (byte) 0x01);
                 int status = mIccReader.detect();
+                
+
                 if (status != 0) {
                     editText.append("Please insert IC Card......." + status + "\n");
                 } else {
                     sqlController.open();
                     String amount = Float.toString(total);
                     sqlController.insertPayment(amount, Integer.toString(status));
+
                     for (int j = 0; j < itemCodes.size(); j++){
                         String itemCode = itemCodes.get(j);
                         Cursor c = sqlController.getItem(itemCode);

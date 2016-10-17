@@ -44,26 +44,32 @@ public class ItemsActivity extends AppCompatActivity
         final EditText itemCodeEditText = (EditText) v.findViewById(R.id.itemCodeEditText);
         final EditText descriptionEditText = (EditText) v.findViewById(R.id.descriptionEditText);
         final EditText priceEditText = (EditText) v.findViewById(R.id.priceEditText);
-        dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                tableLayout.removeAllViews();
-                String itemCode = itemCodeEditText.getText().toString();
-                String description = descriptionEditText.getText().toString();
-                String price = priceEditText.getText().toString();
+        if (!itemCodeEditText.equals("") && !itemCodeEditText.equals(null) && !itemCodeEditText.equals(" ")
+                && !descriptionEditText.equals("") && !descriptionEditText.equals(null) && !descriptionEditText.equals(" ")
+                && !priceEditText.equals("") && !priceEditText.equals(null) && !priceEditText.equals(" ")) {
+            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    tableLayout.removeAllViews();
+                    String itemCode = itemCodeEditText.getText().toString();
+                    String description = descriptionEditText.getText().toString();
+                    String price = priceEditText.getText().toString();
 
-                itemCodeEditText.setText("");
-                descriptionEditText.setText("");
-                priceEditText.setText("");
+                    itemCodeEditText.setText("");
+                    descriptionEditText.setText("");
+                    priceEditText.setText("");
 
-                // inserting data
-                sqlController.open();
-                sqlController.insertData(itemCode, description, price);
-                BuildTable();
+                    // inserting data
+                    sqlController.open();
+                    sqlController.insertData(itemCode, description, price);
+                    BuildTable();
 
-                Toast.makeText(getBaseContext(), "Registration Success", Toast.LENGTH_LONG).show();
-            }
-        });
+                    Toast.makeText(getBaseContext(), "Registration Success", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
+
+        /*
 
         dialogBuilder.setNeutralButton("Delete", new DialogInterface.OnClickListener() {
             @Override
@@ -86,6 +92,8 @@ public class ItemsActivity extends AppCompatActivity
             }
         });
 
+        */
+
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -107,61 +115,72 @@ public class ItemsActivity extends AppCompatActivity
         dialogBuilder.setView(v);
 
         final EditText itemCodeEditText = (EditText) v.findViewById(R.id.itemCodeEditText);
+        if (!itemCodeEditText.equals("") && !itemCodeEditText.equals(null) && !itemCodeEditText.equals(" ")) {
 
 
-        dialogBuilder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String itemCode = itemCodeEditText.getText().toString();
+            dialogBuilder.setPositiveButton("Edit", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
 
-                sqlController.open();
+                    final String itemCode = itemCodeEditText.getText().toString();
+                    if (!itemCode.equals("") && !itemCode.equals(null) && !itemCode.equals(" ")) {
 
-                Cursor c = sqlController.getItem(itemCode);
-
-                new AlertDialog.Builder(context);
-                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View v = inflater.inflate(R.layout.add_dialog, null);
-                dialogBuilder.setView(v);
-                final EditText itemCodeEditText = (EditText) v.findViewById(R.id.itemCodeEditText);
-                final EditText descriptionEditText = (EditText) v.findViewById(R.id.descriptionEditText);
-                final EditText priceEditText = (EditText) v.findViewById(R.id.priceEditText);
-
-                itemCodeEditText.setText(c.getString(1), TextView.BufferType.NORMAL);
-                descriptionEditText.setText(c.getString(2), TextView.BufferType.EDITABLE);
-                priceEditText.setText(c.getString(3), TextView.BufferType.EDITABLE);
-
-
-                dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        tableLayout.removeAllViews();
-                        String itemCode = itemCodeEditText.getText().toString();
-                        String description = descriptionEditText.getText().toString();
-                        String price = priceEditText.getText().toString();
-
-                        itemCodeEditText.setText("");
-                        descriptionEditText.setText("");
-                        priceEditText.setText("");
-
-                        // inserting data
                         sqlController.open();
-                        sqlController.editData(itemCode, description, price);
-                        BuildTable();
 
-                        Toast.makeText(getBaseContext(), "Changes has been made", Toast.LENGTH_LONG).show();
-                    }
-                });
-                dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                AlertDialog dialogAdd = dialogBuilder.create();
-                dialogAdd.show();
+                        Cursor c = sqlController.getItem(itemCode);
+                        if (c.getCount() > 0) {
+                            new AlertDialog.Builder(context);
+                            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                            View v = inflater.inflate(R.layout.add_dialog, null);
+                            dialogBuilder.setView(v);
+                            final EditText itemCodeEditText = (EditText) v.findViewById(R.id.itemCodeEditText);
+                            final EditText descriptionEditText = (EditText) v.findViewById(R.id.descriptionEditText);
+                            final EditText priceEditText = (EditText) v.findViewById(R.id.priceEditText);
 
-            }
-        });
+                            itemCodeEditText.setText(c.getString(1), TextView.BufferType.NORMAL);
+                            descriptionEditText.setText(c.getString(2), TextView.BufferType.EDITABLE);
+                            priceEditText.setText(c.getString(3), TextView.BufferType.EDITABLE);
+
+
+                            dialogBuilder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    tableLayout.removeAllViews();
+                                    String itemCode = itemCodeEditText.getText().toString();
+                                    String description = descriptionEditText.getText().toString();
+                                    String price = priceEditText.getText().toString();
+
+                                    itemCodeEditText.setText("");
+                                    descriptionEditText.setText("");
+                                    priceEditText.setText("");
+
+                                    // inserting data
+                                    sqlController.open();
+                                    sqlController.editData(itemCode, description, price);
+                                    BuildTable();
+                                    Toast.makeText(getBaseContext(), "Changes has been made", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        } else {
+                            Toast.makeText(getBaseContext(), "This item does not exist", Toast.LENGTH_LONG).show();
+                        }
+                        dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        });
+                        AlertDialog dialogAdd = dialogBuilder.create();
+                        dialogAdd.show();
+                    } else {
+                        Toast.makeText(getBaseContext(), "Please type or scan a valid item", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+            });
+        } else {
+            Toast.makeText(getBaseContext(), "Please type or scan a valid item", Toast.LENGTH_LONG).show();
+        }
 
         dialogBuilder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override

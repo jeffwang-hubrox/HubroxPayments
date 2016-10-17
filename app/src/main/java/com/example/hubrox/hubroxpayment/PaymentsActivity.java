@@ -307,9 +307,7 @@ public class PaymentsActivity extends AppCompatActivity
         String itemCode = itemCodeEditText.getText().toString();
         if (!itemCode.equals("") && !itemCode.equals(null) && !itemCode.equals(" ")) {
             sqlController.open();
-
             itemCodes.add(itemCode);
-
             Cursor c = sqlController.getItem(itemCode);
             if (c.getCount() > 0) {
                 total = Float.parseFloat(c.getString(3)) + total;
